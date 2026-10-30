@@ -66,6 +66,18 @@ jobs:
         run: python "$STUDIO_HELPERS/scripts/ci.py" i18n --root project --config "$STUDIO_CONFIG" --stack "$STUDIO_web"
       - name: Audit resolved dependencies
         run: python "$STUDIO_HELPERS/scripts/ci.py" audit --root project --config "$STUDIO_CONFIG" --stack "$STUDIO_web"
+      - name: Validate static build output
+        env:
+          SITE_OUTPUT: ${{ steps.project.outputs.site-output }}
+        run: python "$STUDIO_HELPERS/scripts/check_static_output.py" "$SITE_OUTPUT"
+      - name: Transfer verified static site to caller
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: verified-static-site
+          path: ${{ steps.project.outputs.site-output }}
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 3
       - name: Record actual result
         if: always()
         env:

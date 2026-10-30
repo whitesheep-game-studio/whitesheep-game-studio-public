@@ -3,6 +3,7 @@ stack: web
 kind: application
 directory: .
 build: static
+output: docs
 checks:
   - python build.py
   - python check_site.py

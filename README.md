@@ -87,6 +87,18 @@ The workflow and helper SHA inputs must match. A reusable workflow's relative pa
 refer to the caller checkout, so helpers are explicitly checked out separately under `automation/`;
 the caller is under `project/`. Product format/lint globs cannot accidentally include helper code.
 
+### Static-site artifact handoff
+
+The web contract's `output` (default `docs`) must stay inside the project and cannot
+be the checkout root. After all checks, locale validation and advisory auditing succeed,
+the web workflow validates a nonempty index and rejects symlinks/Git metadata before
+uploading `verified-static-site` (including `.nojekyll`, retention 3 days).
+The caller can download this artifact in its gated main-only deployment job and pass it
+to upload-pages-artifact/deploy-pages. The reusable workflow does not publish Pages,
+request Pages permissions or rebuild the site after verification. Keep a stable `verify`
+gate and require that gate before deployment. Existing partial localization needs an
+explicit caller inventory; checking exported dictionaries does not certify full page coverage.
+
 ## Local validation
 
 ```sh

@@ -68,6 +68,18 @@ class ContractTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             load(self.root, "project.yml")
 
+    def test_web_output_cannot_escape_or_publish_entire_checkout(self):
+        (self.root / "package-lock.json").write_text('{"lockfileVersion":3,"packages":{}}')
+        config = self.config | {"stack": "web", "kind": "application", "build": "static",
+                                "i18n": {"format": "json"},
+                                "dependencies": {"format": "npm", "files": ["package-lock.json"]}}
+        for output in ["..", ".", ".git", "/tmp", "docs\nother"]:
+            with self.subTest(output=output), self.assertRaises(ContractError):
+                self.write(config | {"output": output})
+                load(self.root, "project.yml", "web")
+        self.write(config | {"output": "docs"})
+        self.assertEqual(load(self.root, "project.yml", "web")["output"], self.root / "docs")
+
     def test_flutter_requires_build_pin_and_lock(self):
         config = copy.deepcopy(self.config)
         config.update(stack="flutter", kind="library", build="none",

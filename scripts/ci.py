@@ -36,6 +36,8 @@ def main():
         if output := os.environ.get("GITHUB_OUTPUT"):
             with open(output, "a", encoding="utf-8") as stream:
                 stream.write(f"sdk={config['sdk']}\nwork={work}\nbuild={config['build']}\n")
+                if args.stack == "web":
+                    stream.write(f"site-output={config['output']}\n")
         print(f"Valid {args.stack} contract at {work}")
     elif args.phase == "data":
         if "commands" in config["data"]:
