@@ -1,0 +1,8 @@
+{
+  "name": "WhiteSheep Web CI",
+  "description": "Project checks using an explicitly tested common workflow commit. Configure .ci/project.yml first.",
+  "categories": [
+    "continuous-integration",
+    "JavaScript"
+  ]
+}
