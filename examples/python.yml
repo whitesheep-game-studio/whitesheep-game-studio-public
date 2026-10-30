@@ -1,0 +1,15 @@
+version: 1
+stack: python
+kind: tool
+directory: .
+build: none
+checks:
+  - python3 -m unittest discover -s tests -v
+data:
+  reason: No additional product data in this standalone CLI.
+i18n:
+  format: none
+  reason: Developer CLI has no localized application UI.
+dependencies:
+  format: none
+  reason: This particular CLI uses only Python standard library modules.

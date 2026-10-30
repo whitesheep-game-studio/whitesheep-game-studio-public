@@ -1,0 +1,21 @@
+name: python CI
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    uses: whitesheep-game-studio/whitesheep-game-studio-public/.github/workflows/reusable-python.yml@REPLACE_WITH_TESTED_HUB_SHA
+    with:
+      automation-ref: REPLACE_WITH_TESTED_HUB_SHA
+      config: .ci/project.yml

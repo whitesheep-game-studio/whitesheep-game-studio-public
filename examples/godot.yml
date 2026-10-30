@@ -1,0 +1,18 @@
+version: 1
+stack: godot
+kind: application
+directory: .
+build: windows-debug
+checks:
+  - python3 scripts/check.py
+data:
+  reason: The initial scene fixture has no external gameplay data.
+i18n:
+  format: csv
+  path: i18n/messages.csv
+  locales: [ko, ja, en]
+  base: en
+  fallback: en
+dependencies:
+  format: none
+  reason: GDScript uses only the pinned built-in Godot engine, with no addons.

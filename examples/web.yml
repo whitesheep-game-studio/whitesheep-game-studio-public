@@ -1,0 +1,31 @@
+version: 1
+stack: web
+kind: application
+directory: .
+build: static
+checks:
+  - python build.py
+  - python check_site.py
+  - python -m unittest discover -s tests -p 'test_*.py' -v
+  - npm run lint
+  - npm run format:check
+  - npm run html:check
+  - npm test
+  - npm run test:e2e
+  - npm run lighthouse
+data:
+  commands:
+    - node scripts/export-i18n.mjs
+i18n:
+  format: json
+  directory: .ci/locales
+  files:
+    ko: ko.json
+    ja: ja.json
+    en: en.json
+  locales: [ko, ja, en]
+  base: ko
+  fallback: ko
+dependencies:
+  format: npm
+  files: [package-lock.json]

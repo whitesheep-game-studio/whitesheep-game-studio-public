@@ -1,0 +1,21 @@
+version: 1
+stack: flutter
+kind: application
+directory: .
+build: android-debug
+data:
+  reason: This starter has no separate product data files.
+i18n:
+  format: arb
+  directory: lib/l10n
+  pattern: '*.arb'
+  files:
+    ko: app_ko.arb
+    ja: app_ja.arb
+    en: app_en.arb
+  locales: [ko, ja, en]
+  base: en
+  fallback: en
+dependencies:
+  format: pub
+  files: [pubspec.lock]
