@@ -28,7 +28,7 @@ class ContractTests(unittest.TestCase):
 
     def test_valid_python_tool(self):
         self.write()
-        self.assertEqual(load(self.root, "project.yml", "python")["sdk"], "3.12")
+        self.assertEqual(load(self.root, "project.yml", "python")["sdk"], "3.15.2")
 
     def test_contract_errors(self):
         mutations = [{"version": 2}, {"stack": "unity"}, {"directory": "../outside"},
@@ -89,6 +89,20 @@ class ContractTests(unittest.TestCase):
         self.write(config)
         self.assertEqual(load(self.root, "project.yml")["sdk"], "3.47.8")
         (self.root / ".fvmrc").write_text(json.dumps({"flutter": "stable"}))
+        with self.assertRaises(ContractError):
+            load(self.root, "project.yml")
+
+    def test_godot_accepts_verified_versions_and_rejects_unreviewed_engine(self):
+        config = self.config | {"stack": "godot", "kind": "application",
+                                "build": "windows-debug", "i18n": {"format": "csv"},
+                                "dependencies": {"format": "none", "reason": "No addons"}}
+        (self.root / "project.godot").touch()
+        (self.root / "export_presets.cfg").touch()
+        self.write(config)
+        for version in ("4.6.3", "4.7.2"):
+            (self.root / ".godot-version").write_text(version)
+            self.assertEqual(load(self.root, "project.yml")["sdk"], version)
+        (self.root / ".godot-version").write_text("4.8.0")
         with self.assertRaises(ContractError):
             load(self.root, "project.yml")
 

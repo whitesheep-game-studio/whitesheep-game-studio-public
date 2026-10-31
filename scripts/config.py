@@ -122,7 +122,7 @@ def load(root, filename, stack=None):
             raise ContractError("Frozen Flutter install requires pubspec.lock")
     elif kind == "godot":
         config["sdk"] = (work / ".godot-version").read_text().strip()
-        if config["sdk"] != "4.6.3":
+        if config["sdk"] not in {"4.6.3", "4.7.2"}:
             raise ContractError("Verify the engine/export checksums before supporting a new Godot")
         if not (work / "project.godot").is_file():
             raise ContractError("Missing project.godot")
@@ -130,7 +130,7 @@ def load(root, filename, stack=None):
             raise ContractError("Windows export requires committed export_presets.cfg")
         commands(config.get("checks"), "checks (existing Godot test command)")
     else:
-        config["sdk"] = "22" if kind == "web" else "3.12"
+        config["sdk"] = "26.13.0" if kind == "web" else "3.15.2"
         commands(config.get("checks"), "checks")
     if not re.fullmatch(r"\d+\.\d+\.\d+", config["sdk"]) and kind in {"flutter", "godot"}:
         raise ContractError("SDK must be pinned to an exact stable version")
