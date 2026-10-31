@@ -61,7 +61,7 @@ def load(root, filename, stack=None):
     if not isinstance(config, dict) or config.get("version") != 1:
         raise ContractError("Project contract must be a mapping with version: 1")
     allowed = {"version", "stack", "directory", "kind", "build", "data", "i18n",
-               "dependencies", "checks", "requirements"}
+               "dependencies", "checks", "requirements", "output"}
     if set(config) - allowed:
         raise ContractError(f"Unknown project settings: {sorted(set(config) - allowed)}")
     kind = config.get("stack")
@@ -136,6 +136,11 @@ def load(root, filename, stack=None):
         raise ContractError("SDK must be pinned to an exact stable version")
     if kind == "web" and not (work / "package-lock.json").is_file():
         raise ContractError("Web npm ci requires package-lock.json")
+    if kind == "web":
+        output = inside(work, config.get("output", "docs"))
+        if output == work or output.is_relative_to(work / ".git"):
+            raise ContractError("Static build output must be a dedicated directory")
+        config["output"] = output
     for name in config.get("requirements", []):
         if not inside(work, name).is_file():
             raise ContractError(f"Missing Python requirement file: {name}")
