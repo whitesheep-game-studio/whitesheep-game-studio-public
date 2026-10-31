@@ -24,9 +24,9 @@ Each caller adds `.ci/project.yml`; see `examples/`. Required common fields:
 | Profile | Required checks | Build |
 |---|---|---|
 | Flutter | exact .fvmrc, frozen pub, Dart format, analyze, test, data, ARB, OSV | Android debug for apps; none for libraries |
-| Godot | .godot-version 4.6.3, SHA-512 engine/templates, existing import/parser/scene/boot checks, data, CSV/PO | unsigned Windows debug, actual preset and nonempty exe |
-| Web | Node 22, npm ci, explicit existing build/lint/format/unit/browser/axe/HTML/Lighthouse commands, data, exported JSON locale dictionaries, OSV | existing static build; deployment stays in caller |
-| Python | Python 3.12, Ruff E4/E7/E9/F, pinned requirements, existing tests/data, optional applicable locales, OSV | none for current CLI tools |
+| Godot | .godot-version 4.6.3 or 4.7.2, SHA-512 engine/templates, existing import/parser/scene/boot checks, data, CSV/PO | unsigned Windows debug, actual preset and nonempty exe |
+| Web | Node 26.13.0 LTS, npm ci, explicit existing build/lint/format/unit/browser/axe/HTML/Lighthouse commands, data, exported JSON locale dictionaries, OSV | existing static build; deployment stays in caller |
+| Python | Python 3.15.2, Ruff E4/E7/E9/F, pinned requirements, existing tests/data, optional applicable locales, OSV | none for current CLI tools |
 
 Current profiles do **not** implement iOS/macOS/Flutter desktop, Godot Android,
 FastAPI/PostgreSQL/Docker or an all-platform tag release pipeline. Add a profile only
