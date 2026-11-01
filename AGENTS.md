@@ -24,3 +24,7 @@
 - Preserve existing pins, lockfiles, user changes and required checks. Authorized upgrades must update SDK/CI/dependency pins and lockfiles together in a reviewable PR and run relevant tests and representative builds.
 - Record exact verified versions and lockfiles for new projects. Never install an unverified latest version on every startup or bypass a failed security/build check.
 - Report local tests, remote CI, platform builds and unrun checks separately. Do not merge, deploy, publish or release without the user's explicit instruction.
+
+
+## WhiteSheep Dual-AI Peer Engineering
+Codex and Claude are equal engineering peers: both design, implement, test, document, fix and independently review. Rotate implementer and reviewer per PR. Reviewer verifies requirements, actual diff, tests, security, performance and regressions with severity/file/line; implementer fixes and reviewer rechecks. See `docs/ai-collaboration.md` and PR template. Separate branches, no concurrent same-file edits, no invented CI results. Preserve existing security, i18n, GDD and dependency policies. High-risk auth, purchases, finances, player data or shared frameworks need independent design review. Only OWNER approves main merges, deployment, release, credentials or permissions.
