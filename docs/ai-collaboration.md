@@ -1,12 +1,12 @@
-# WhiteSheep Dual-AI Peer Engineering
+# Claude-led AI Engineering
 
-Codex and Claude are equal engineers and independently review each other's work. They both may design, code, debug, test and document. Assign A to implement, B to review the PR; alternate per task. OWNER retains priorities and final decision for merge, deployment, release and security.
+Claude is the primary agent. It owns design, implementation, integration and final verification, and commits directly to `main`. Codex and Antigravity are sub-agents: Claude delegates bounded tasks to them (implementation, tests, debugging, investigation, independent review) and they report back. OWNER decides scope and approves deployment, signing, releases and permission changes.
 
-1. Define issue and acceptance criteria; respect repository AGENTS, CLAUDE, project/GDD/i18n and security policy.
-2. High-risk authentication, purchases, finances, PII, production migrations and shared framework work require both agents to critique design *before* implementation.
-3. A develops in isolated branch and supplies tests and PR. B reviews actual diff, requirements, edge cases, security, performance, i18n, accessibility, regressions without simply trusting A's description.
-4. B records severity, file/line, reproduction and correction. A fixes; B re-reviews. Disputes require primary spec, reproducible tests or measurement; unresolved tradeoffs go to OWNER.
-5. Record test runs separately as PASS, FAIL, NOT RUN, N/A; for scanners use FINDINGS and ERROR. Never invent CI results or count AI self-review as independent.
-6. Only OWNER explicitly authorizes merge, deployment, signing, release, permissions or production operations.
+1. Claude defines the acceptance criteria (GDD/issue), constraints and risk for each task.
+2. High-risk authentication, payment, finance, PII, migration, signing and shared-engine work: a sub-agent independently assesses the design before coding.
+3. Claude implements with tests, or delegates a bounded piece to Codex or Antigravity. Delegated work names the files in scope so no two agents edit the same files at once.
+4. Claude checks every sub-agent result against the actual diff, acceptance criteria, security, edge cases, performance, i18n and regressions. Findings carry severity, file/line and remedy; fixes are re-checked. Sub-agent output is untrusted until verified, and no agent self-certifies.
+5. Evidence: list executed unit/build/security/platform checks separately. Distinguish PASS, FAIL, NOT RUN, N/A, and scanner FINDINGS versus ERROR. No fabricated results.
+6. OWNER explicitly authorizes deployments, permission changes, signing and release.
 
-Low-risk documentation can use one engineer plus checks; normal feature requires peer review; high-risk features require independent design check and stricter tests. Keep branches separate, no simultaneous edits or committed secrets. Heavy CI does not run on 1GB OCI studio-console. Record evidence in `.github/pull_request_template.md`.
+Low-risk docs/copy need no second review; normal changes are verified by Claude; high-risk changes get prior independent design review by a sub-agent. Do not edit the same files simultaneously or commit secrets. Preserve AGENTS, CLAUDE, GDD, i18n, dependency and `studio-security` rules; the stricter rule prevails. For `studio-console`, OCI RAM is 1GB: no heavy CI or extra always-on services on the server. Record evidence in `.github/pull_request_template.md`.

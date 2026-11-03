@@ -1,6 +1,6 @@
 ## Goal and acceptance criteria
 
-## Implementer / independent reviewer (Codex or Claude)
+## Primary agent (Claude) / sub-agents used (Codex, Antigravity)
 
 ## Changes, compatibility, risk and rollback
 
@@ -17,6 +17,6 @@
 | Severity | File:line / finding | Fix | Re-review |
 |---|---|---|---|
 
-- [ ] Peer review evidenced
+- [ ] Claude verified sub-agent output against the actual diff and tests
 - [ ] Required checks completed
-- [ ] OWNER expressly authorized merge (deploy separately)
+- [ ] OWNER approved deployment/release (if applicable)
