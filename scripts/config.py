@@ -130,7 +130,7 @@ def load(root, filename, stack=None):
             raise ContractError("Windows export requires committed export_presets.cfg")
         commands(config.get("checks"), "checks (existing Godot test command)")
     else:
-        config["sdk"] = "26.13.0" if kind == "web" else "3.15.2"
+        config["sdk"] = "26.13.1" if kind == "web" else "3.15.2"
         commands(config.get("checks"), "checks")
     if not re.fullmatch(r"\d+\.\d+\.\d+", config["sdk"]) and kind in {"flutter", "godot"}:
         raise ContractError("SDK must be pinned to an exact stable version")

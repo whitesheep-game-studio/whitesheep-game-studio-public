@@ -49,7 +49,7 @@ jobs:
         run: python "$STUDIO_HELPERS/scripts/ci.py" preflight --root project --config "$STUDIO_CONFIG" --stack "$STUDIO_web"
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: '26.13.0'
+          node-version: '26.13.1'
           cache: npm
           cache-dependency-path: project/**/package-lock.json
       - name: Frozen dependency install
