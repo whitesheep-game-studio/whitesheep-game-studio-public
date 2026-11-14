@@ -31,9 +31,13 @@ class ArtifactTests(unittest.TestCase):
                 prepare(self.root, tag)
 
     def test_release_rejects_external_symlink(self):
-        (self.root / "linked").symlink_to("/etc/hosts")
-        with self.assertRaises(ValueError):
-            prepare(self.root, "v1.2.3")
+        with tempfile.TemporaryDirectory() as outside:
+            target = Path(outside) / "external.apk"
+            target.write_bytes(b"external fixture payload")
+            (self.root / "linked.apk").symlink_to(target)
+            with self.assertRaisesRegex(ValueError, "regular files inside"):
+                prepare(self.root, "v1.2.3")
+            self.assertFalse((self.root / "SHA256SUMS").exists())
 
     def preset(self):
         (self.root / "export_presets.cfg").write_text('''[preset.0]

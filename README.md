@@ -115,3 +115,18 @@ If a development network blocks `api.osv.dev`, that is a failed local live
 audit, not a clean dependency result; the GitHub Actions audit must pass before merge.
 Never replace that audit with mocks in production. Unit tests deliberately mock clean,
 vulnerable, partial and unavailable API results to test failure handling.
+
+### Native Windows local tests
+
+Run the suite with Git Bash available on PATH because the command-runner tests invoke
+`bash`. Use the Windows virtual environment executables (`.venv/Scripts/python.exe`
+and `.venv/Scripts/ruff.exe`) instead of the Unix `.venv/bin/` paths above.
+
+The security tests create real file and directory symbolic links to temporary targets.
+Windows requires Developer Mode or the symbolic-link privilege/an elevated process.
+A missing capability produces WinError 1314 during fixture creation; it is an
+infrastructure error, not a clean security result. Obtain OWNER approval before
+changing system settings. Do not replace links with copies or skip these tests to
+report success. The tests do not enable Developer Mode or alter permissions themselves.
+
+Official Python reference: https://docs.python.org/3/library/os.html#os.symlink

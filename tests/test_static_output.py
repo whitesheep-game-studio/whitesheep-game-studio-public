@@ -28,12 +28,21 @@ class StaticOutputTests(unittest.TestCase):
 
     def test_file_and_directory_symlinks_fail(self):
         (self.root / "index.html").write_text("site")
-        for target in ["/etc/hosts", "/tmp"]:
-            link = self.root / "external"
-            link.symlink_to(target)
-            with self.assertRaises(ContractError):
-                check(self.root)
-            link.unlink()
+        with tempfile.TemporaryDirectory() as outside:
+            external = Path(outside)
+            file_target = external / "external.txt"
+            file_target.write_text("external fixture payload")
+            directory_target = external / "directory"
+            directory_target.mkdir()
+            for target in [file_target, directory_target]:
+                with self.subTest(directory=target.is_dir()):
+                    link = self.root / "external"
+                    link.symlink_to(target, target_is_directory=target.is_dir())
+                    try:
+                        with self.assertRaisesRegex(ContractError, "cannot include symlinks"):
+                            check(self.root)
+                    finally:
+                        link.unlink()
 
     def test_git_metadata_fails(self):
         (self.root / "index.html").write_text("site")

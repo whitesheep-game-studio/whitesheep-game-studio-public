@@ -33,3 +33,25 @@ Common helper checks (Windows, Python 3.13.17 rather than CI's 3.15.2):
 
 A tested local pilot does not imply all remote checks passed. Preserve the paired full
 workflow/helper SHA when callers adopt this commit; keep the Pages verify/deploy gates.
+
+## Windows symlink follow-up — 2026-11-14
+
+Resolved the earlier three test errors. Root cause: native Windows symbolic-link
+creation failed with WinError 1314 while Developer Mode was disabled and the
+non-elevated process lacked SeCreateSymbolicLinkPrivilege. With explicit OWNER
+approval, Developer Mode was enabled through Windows Settings (the OWNER completed
+the confirmation). Registry state was verified as 1, and native file and directory
+symlink creation, resolution and cleanup both passed without an elevated test process.
+
+The three affected tests now create real temporary targets instead of assuming
+Linux /tmp and /etc/hosts exist. Directory symlinks explicitly declare their type.
+The release test asserts the actual link-boundary rejection message and absence of
+SHA256SUMS, so an empty-artifact error cannot accidentally satisfy it. Static output
+and contract tests likewise assert their intended rejection messages.
+
+PASS: complete native Windows unittest suite, 51 tests, zero failures/errors/skips;
+Ruff 0.17.3; workflow policy validation; actionlint 1.7.12 (-shellcheck=); git diff --check.
+No production guard, test assertion or security check was disabled. Windows execution
+uses Python 3.13.17 and Git Bash on PATH; actual GitHub Actions/Linux integration and
+ShellCheck remain NOT RUN. This test/documentation-only follow-up does not require
+callers to change their existing workflow/helper SHA pair.

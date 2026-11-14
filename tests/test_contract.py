@@ -52,10 +52,12 @@ class ContractTests(unittest.TestCase):
             load(self.root, "project.yml", "flutter")
 
     def test_symlink_escape(self):
-        (self.root / "escape").symlink_to("/tmp", target_is_directory=True)
-        self.write(self.config | {"directory": "escape"})
-        with self.assertRaises(ContractError):
-            load(self.root, "project.yml")
+        with tempfile.TemporaryDirectory() as outside:
+            target = Path(outside)
+            (self.root / "escape").symlink_to(target, target_is_directory=True)
+            self.write(self.config | {"directory": "escape"})
+            with self.assertRaisesRegex(ContractError, "Path escapes project"):
+                load(self.root, "project.yml")
 
     def test_cannot_skip_existing_requirements(self):
         (self.root / "requirements.txt").write_text("PyYAML==6.0.3\n")
